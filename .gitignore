@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# datasets
+*.csv
+
 # C extensions
 *.so
 
@@ -70,6 +73,7 @@ docs/_build/
 target/
 
 # Jupyter Notebook
+*.ipynb
 .ipynb_checkpoints
 
 # pyenv
