@@ -1,5 +1,5 @@
 from unittest import TestCase
-from dfreduce import DFReduce
+import dfreduce.core as dfr
 import numpy as np
 
 try:
@@ -13,7 +13,7 @@ class BasicTest(TestCase):
     def basic_test(self):
         df = pd.DataFrame(np.random.randn(100000, 5),
                           columns=['a', 'b', 'c', 'd', 'e'])
-        dfr = DFReduce()
-        test_df = dfr.reduce(df)
+
+        test_df = dfr.DFReduce().reduce(df)
         self.assertIsNotNone(test_df)
         self.assertTrue(isinstance(test_df, pd.DataFrame))
