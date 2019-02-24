@@ -7,12 +7,11 @@ pip install dfreduce
 
 ## Usage
 ```
-import dfreduce
+import dfreduce ad dfr
 import pandas as pd
 
 df = pd.read_csv('https://ed-public-download.app.cloud.gov/downloads/Most-Recent-Cohorts-Scorecard-Elements.csv')
-dfr = DFreduce()
-df_reduced = dfr.reduce(df)
+df_reduced = dfr.DFreduce().reduce(df)
 ```
 
 ## Uninstallation
