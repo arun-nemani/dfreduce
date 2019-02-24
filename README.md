@@ -2,7 +2,7 @@
 
 [![PyPI version](https://badge.fury.io/py/dfreduce.svg)](https://badge.fury.io/py/dfreduce)
 
-Description: Automatically reduce the size of your pandas dataframe
+Description: Automatically reduce the memory size of your pandas dataframe
 
 ## Installation
 pip install dfreduce
