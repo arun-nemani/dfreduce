@@ -10,7 +10,7 @@ pip install dfreduce
 import dfreduce
 import pandas as pd
 
-df = pd.read_csv("http://www.ats.ucla.edu/stat/data/binary.csv")
+df = pd.read_csv('https://ed-public-download.app.cloud.gov/downloads/Most-Recent-Cohorts-Scorecard-Elements.csv')
 dfr = DFreduce()
 df_reduced = dfr.reduce(df)
 ```
