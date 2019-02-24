@@ -1,6 +1,6 @@
 # dfreduce
 
-[![GitHub license](https://img.shields.io/github/license/dfreduce/dfreduce.svg)](https://github.com/dfreduce/dfreduce/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/dfreduce/dfreduce.svg)](https://github.com/arun-nemani/dfreduce/blob/master/LICENSE)
 [![PyPI version](https://badge.fury.io/py/dfreduce.svg)](https://badge.fury.io/py/dfreduce)
 
 Description: Automatically reduce the size of your pandas dataframe
