@@ -11,7 +11,8 @@ import dfreduce
 import pandas as pd
 
 df = pd.read_csv("http://www.ats.ucla.edu/stat/data/binary.csv")
-df_reduced = DFreduce(df)
+dfr = DFreduce()
+df_reduced = dfr.reduce(df)
 ```
 
 ## Uninstallation
