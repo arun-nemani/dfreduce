@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from tqdm import tqdm
 
 
 class DFReduce:
@@ -11,6 +12,7 @@ class DFReduce:
         return
 
     def reduce(self, df):
+        tqdm.pandas()
         if isinstance(df, pd.DataFrame):
             self.data = df.copy()
         else:
@@ -24,15 +26,15 @@ class DFReduce:
             deep=True).sum() / 1024 ** 2  # report in MBs
 
         # Reduce ints
-        self.data.loc[:, self.int_columns] = self.data.loc[:, self.int_columns].apply(
+        self.data.loc[:, self.int_columns] = self.data.loc[:, self.int_columns].progress_apply(
             pd.to_numeric, downcast='unsigned')
 
         # Reduce floats
-        self.data.loc[:, self.float_columns] = self.data.loc[:, self.float_columns].apply(
+        self.data.loc[:, self.float_columns] = self.data.loc[:, self.float_columns].progress_apply(
             pd.to_numeric, downcast='float')
 
         # Reduce objects to categoricals
-        for col in self.obj_columns:
+        for col in tqdm(self.obj_columns):
             num_unique_values = len(self.data[col].unique())
             num_total_values = len(self.data[col])
             if num_unique_values / num_total_values < 0.5:

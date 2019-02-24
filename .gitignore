@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# ignore makefile for package
+MAKEFILE
+
 # datasets
 *.csv
 
