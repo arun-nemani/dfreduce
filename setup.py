@@ -9,7 +9,7 @@ with open(P.join(P.dirname(__file__), 'requirements.txt')) as f:
 
 setuptools.setup(
     name="dfreduce",
-    version="1.4",
+    version="1.5",
     author="Arun Nemani",
     author_email="neman014@gmail.com",
     test_suite='nose.collector',

@@ -13,8 +13,8 @@ class DFReduce:
         else:
             raise ValueError('Input must be a pandas dataframe')
         self.columns = self.df.columns
-        self.int_columns = self.df.dtypes == np.int
-        self.float_columns = self.df.dtypes == np.float
+        self.int_columns = self.df.dtypes == np.integer
+        self.float_columns = self.df.dtypes == np.inexact
         self.obj_columns = self.df.loc[:, self.df.dtypes == object].columns
         self.orig_memory = self.df.memory_usage(deep=True).sum() / 1024 ** 2  # report in MBs # noqa: E501
         self.new_memory = []
