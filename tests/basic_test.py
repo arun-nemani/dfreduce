@@ -15,8 +15,23 @@ class TestBasic(TestCase):
         with self.assertRaises(ValueError):
             DFReduce(df).reduce()
 
-    def test_numerical_values_equality(self):
-        df = pd.DataFrame(np.random.randn(100000, 5), columns=['a', 'b', 'c', 'd', 'e'])
+    def test_int8_values_equality(self):
+        df = pd.DataFrame(np.random.randint(-5, 5, size=[100, 5], dtype='int64'), columns=['a', 'b', 'c', 'd', 'e'])  # noqa: E501
+        test_df = DFReduce(df).reduce()
+        self.assertEqual(np.isclose(df, test_df, rtol=1e-7, atol=1e-7, equal_nan=False).all(), True)  # noqa: E501
+
+    def test_int8_type_equality(self):
+        df = pd.DataFrame(np.random.randint(-5, 5, size=[100, 5], dtype='int64'), columns=['a', 'b', 'c', 'd', 'e'])  # noqa: E501
+        test_df = DFReduce(df).reduce()
+        self.assertEqual(test_df.a.dtype.name, 'int8')
+
+    def test_int16_type_equality(self):
+        df = pd.DataFrame(np.random.randint(-12345, 12345, size=[1000, 5], dtype='int64'), columns=['a', 'b', 'c', 'd', 'e'])  # noqa: E501
+        test_df = DFReduce(df).reduce()
+        self.assertEqual(test_df.a.dtype.name, 'int16')
+
+    def test_float_values_equality(self):
+        df = pd.DataFrame(np.random.randn(100000, 5), columns=['a', 'b', 'c', 'd', 'e'])  # noqa: E501
 
         test_df = DFReduce(df).reduce()
         self.assertEqual(np.isclose(df, test_df, rtol=1e-7, atol=1e-7, equal_nan=False).all(), True)  # noqa: E501

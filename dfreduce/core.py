@@ -16,20 +16,20 @@ class DFReduce:
         self.int_columns = self.df.dtypes == np.int
         self.float_columns = self.df.dtypes == np.float
         self.obj_columns = self.df.loc[:, self.df.dtypes == object].columns
-        self.orig_memory = self.df.memory_usage(deep=True).sum() / 1024 ** 2  # report in MBs
+        self.orig_memory = self.df.memory_usage(deep=True).sum() / 1024 ** 2  # report in MBs # noqa: E501
         self.new_memory = []
         return
 
     def reduce(self):
         # Reduce ints
-        self.df.loc[:, self.int_columns] = self.df.loc[:, self.int_columns].progress_apply(
-            pd.to_numeric, downcast='unsigned')
+        self.df.loc[:, self.int_columns] = self.df.loc[:, self.int_columns].progress_apply(  # noqa: E501
+            pd.to_numeric, downcast='signed')
 
         # Reduce floats
-        self.df.loc[:, self.float_columns] = self.df.loc[:, self.float_columns].progress_apply(
+        self.df.loc[:, self.float_columns] = self.df.loc[:, self.float_columns].progress_apply(  # noqa: E501
             pd.to_numeric, downcast='float')
 
-        # Reduce objects to categoricals only when unique values is less than 50% of arr length
+        # Reduce objects to categoricals only when unique values is less than 50% of arr length # noqa: E501
         for col in tqdm(self.obj_columns):
             num_unique_values = len(self.df[col].unique())
             num_total_values = len(self.df[col])
