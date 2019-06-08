@@ -1,19 +1,39 @@
 from unittest import TestCase
-import dfreduce.core as dfr
-import numpy as np
+from dfreduce.core import DFReduce
 
 try:
     import pandas as pd
+    import numpy as np
 except ImportError:
     pass
 
 
-class BasicTest(TestCase):
+class TestBasic(TestCase):
 
-    def basic_test(self):
-        df = pd.DataFrame(np.random.randn(100000, 5),
-                          columns=['a', 'b', 'c', 'd', 'e'])
+    def test_check_dataframe_type(self):
+        df = 'test'
+        with self.assertRaises(ValueError):
+            DFReduce(df).reduce()
 
-        test_df = dfr.DFReduce().reduce(df)
-        self.assertIsNotNone(test_df)
-        self.assertTrue(isinstance(test_df, pd.DataFrame))
+    def test_numerical_values_equality(self):
+        df = pd.DataFrame(np.random.randn(100000, 5), columns=['a', 'b', 'c', 'd', 'e'])
+
+        test_df = DFReduce(df).reduce()
+        self.assertEqual(np.isclose(df, test_df, rtol=1e-7, atol=1e-7, equal_nan=False).all(), True)  # noqa: E501
+
+    def test_string_values_equality(self):
+        df = pd.DataFrame(np.random.randn(100000, 1), columns=['a'])
+        df.a = df.a.astype(np.str)
+        test_df = DFReduce(df).reduce()
+        self.assertEqual((test_df.a == df.a).all(), True)
+
+    def test_string_type(self):
+        df = pd.DataFrame(np.random.randn(100000, 1), columns=['a'])
+        df.a = df.a.astype(np.str)
+        test_df = DFReduce(df).reduce()
+        self.assertEqual(test_df.a.dtype.name, 'object')
+
+    def test_cat_type(self):
+        df = pd.DataFrame(['test'] * 100, columns=['a'])
+        test_df = DFReduce(df).reduce()
+        self.assertEqual(test_df.a.dtype.name, 'category')

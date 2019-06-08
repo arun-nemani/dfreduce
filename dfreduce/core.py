@@ -6,46 +6,42 @@ from tqdm import tqdm
 class DFReduce:
     """ Returns a memory efficient copy of an input dataframe """
 
-    def __init__(self):
-        self.data = []
+    def __init__(self, df):
+        tqdm.pandas()
+        if isinstance(df, pd.DataFrame):
+            self.df = df.copy()
+        else:
+            raise ValueError('Input must be a pandas dataframe')
+        self.columns = self.df.columns
+        self.int_columns = self.df.dtypes == np.int
+        self.float_columns = self.df.dtypes == np.float
+        self.obj_columns = self.df.loc[:, self.df.dtypes == object].columns
+        self.orig_memory = self.df.memory_usage(deep=True).sum() / 1024 ** 2  # report in MBs
         self.new_memory = []
         return
 
-    def reduce(self, df):
-        tqdm.pandas()
-        if isinstance(df, pd.DataFrame):
-            self.data = df.copy()
-        else:
-            raise ValueError('Input must be a pandas dataframe')
-
-        self.columns = df.columns
-        self.int_columns = df.dtypes == np.int
-        self.float_columns = df.dtypes == np.float
-        self.obj_columns = df.loc[:, df.dtypes == object].columns
-        self.orig_memory = df.memory_usage(
-            deep=True).sum() / 1024 ** 2  # report in MBs
-
+    def reduce(self):
         # Reduce ints
-        self.data.loc[:, self.int_columns] = self.data.loc[:, self.int_columns].progress_apply(
+        self.df.loc[:, self.int_columns] = self.df.loc[:, self.int_columns].progress_apply(
             pd.to_numeric, downcast='unsigned')
 
         # Reduce floats
-        self.data.loc[:, self.float_columns] = self.data.loc[:, self.float_columns].progress_apply(
+        self.df.loc[:, self.float_columns] = self.df.loc[:, self.float_columns].progress_apply(
             pd.to_numeric, downcast='float')
 
-        # Reduce objects to categoricals
+        # Reduce objects to categoricals only when unique values is less than 50% of arr length
         for col in tqdm(self.obj_columns):
-            num_unique_values = len(self.data[col].unique())
-            num_total_values = len(self.data[col])
+            num_unique_values = len(self.df[col].unique())
+            num_total_values = len(self.df[col])
             if num_unique_values / num_total_values < 0.5:
-                self.data.loc[:, col] = self.data[col].astype('category')
+                self.df.loc[:, col] = self.df[col].astype('category')
             else:
-                self.data.loc[:, col] = self.data[col]
+                self.df.loc[:, col] = self.df[col]
 
-        self.new_memory = self.data.memory_usage(deep=True).sum() / 1024 ** 2
+        self.new_memory = self.df.memory_usage(deep=True).sum() / 1024 ** 2
         print("Memory reduced from {:03.2f} MB to {:03.2f} MB".format(
             self.orig_memory, self.new_memory))
         print("Reduced by {:03.2f}% !!".format(
             100 * (self.orig_memory - self.new_memory) / self.orig_memory))
 
-        return self.data
+        return self.df
