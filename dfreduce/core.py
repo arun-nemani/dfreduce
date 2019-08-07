@@ -3,15 +3,24 @@ import numpy as np
 from tqdm import tqdm
 
 
-class DFReduce:
+class DFReduce():
     """ Returns a memory efficient copy of an input dataframe """
 
-    def __init__(self, df):
+    def __init__(self, df, inplace=False):
         tqdm.pandas()
         if isinstance(df, pd.DataFrame):
-            self.df = df.copy()
+            pass
         else:
             raise ValueError('Input must be a pandas dataframe')
+        if isinstance(inplace, bool):
+            self._inplace = inplace
+        else:
+            raise ValueError('Inplace must be either True or False (bool)')
+
+        if self._inplace:
+            self.df = df
+        else:
+            self.df = df.copy()
         self.columns = self.df.columns
         self.int_columns = self.df.dtypes == np.integer
         self.float_columns = self.df.dtypes == np.inexact

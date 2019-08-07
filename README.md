@@ -14,6 +14,9 @@ import pandas as pd
 
 df = pd.read_csv('https://ed-public-download.app.cloud.gov/downloads/Most-Recent-Cohorts-Scorecard-Elements.csv')
 df_reduced = DFReduce(df).reduce()
+
+# Alternatively, you can also use the inplace parameter to overwrite input dataframe
+DFReduce(df, inplace=True).reduce()
 ```
 
 ## Uninstallation

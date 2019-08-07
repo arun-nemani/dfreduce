@@ -52,3 +52,9 @@ class TestBasic(TestCase):
         df = pd.DataFrame(['test'] * 100, columns=['a'])
         test_df = DFReduce(df).reduce()
         self.assertEqual(test_df.a.dtype.name, 'category')
+
+    def test_inplace_param(self):
+        df = pd.DataFrame(np.random.randint(-5, 5, size=[100, 5], dtype='int64'), columns=['a', 'b', 'c', 'd', 'e'])  # noqa: E501
+        df_copy = df.copy()
+        DFReduce(df_copy, inplace=True).reduce()
+        self.assertEqual(np.isclose(df, df_copy, rtol=1e-7, atol=1e-7, equal_nan=False).all(), True)  # noqa: E501
