@@ -53,4 +53,5 @@ class DFReduce():
         print("Reduced by {:03.2f}% !!".format(
             100 * (self.orig_memory - self.new_memory) / self.orig_memory))
 
-        return self.df
+        if not self._inplace:
+            return self.df
